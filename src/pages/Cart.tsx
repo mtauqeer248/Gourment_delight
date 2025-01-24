@@ -1,9 +1,15 @@
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useCart } from '../hooks/useCart';
-import { Link } from 'react-router-dom';
+import { useOrder } from '../hooks/useCart';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Cart() {
-  const { items, removeFromCart, updateQuantity, total } = useCart();
+  const { items, removeFromCart, updateQuantity, total, createOrder } = useOrder();
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    createOrder(total);
+    navigate('/order-tracker');
+  };
 
   if (items.length === 0) {
     return (
@@ -22,12 +28,9 @@ export default function Cart() {
     );
   }
 
- 
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
-      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2">
@@ -92,12 +95,12 @@ export default function Cart() {
                 </div>
               </div>
             </div>
-            <Link
-            to="/OrderTracker"
-            className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700"
-          >
-            Proceed Checkout
-          </Link>
+            <button
+              onClick={handleCheckout}
+              className="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700"
+            >
+              Proceed Checkout
+            </button>
           </div>
         </div>
       </div>

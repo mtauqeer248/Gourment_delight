@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCart } from '../hooks/useCart';
+import { useOrder } from '../hooks/useCart';
 import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
@@ -11,11 +11,12 @@ interface MenuItem {
   price: number;
   image: string;
   category: string;
+  quantity?: number;
 }
 
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const { addToCart } = useCart();
+  const { addToCart } = useOrder();
   const { user } = useAuth();
 
   const categories = [
@@ -203,7 +204,6 @@ export default function Menu() {
     ? menuItems 
     : menuItems.filter(item => item.category === selectedCategory);
 
-  // Show only first three items of each category for non-authenticated users
   const getRestrictedItems = () => {
     const itemsByCategory = menuItems.reduce((acc, item) => {
       if (!acc[item.category]) {
@@ -217,6 +217,13 @@ export default function Menu() {
   };
 
   const displayedItems = user ? filteredItems : getRestrictedItems();
+
+  const handleAddToCart = (item: MenuItem) => {
+    addToCart({
+      ...item,
+      quantity: 1
+    });
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -270,7 +277,7 @@ export default function Menu() {
             price={item.price}
             description={item.description}
             image={item.image}
-            onAddToCart={() => addToCart(item)}
+            onAddToCart={() => handleAddToCart(item)}
           />
         ))}
       </div>

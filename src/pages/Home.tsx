@@ -29,6 +29,13 @@ export default function Home() {
               View Menu
               <ArrowRight className="w-5 h-5" />
             </Link>
+            <Link
+              to="/resturant-seating"
+              className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg ml-2 font-semibold hover:bg-indigo-700 transition-colors"
+            >
+              Book Reservation
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
