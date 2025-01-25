@@ -21,8 +21,8 @@ export default function Register() {
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validateMobileNumber = (mobile) => /^\d{10}$/.test(mobile);
+  const validateEmail = (email:string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validateMobileNumber = (mobile:string) => /^\d{10}$/.test(mobile);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

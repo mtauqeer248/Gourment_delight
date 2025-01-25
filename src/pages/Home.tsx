@@ -1,7 +1,10 @@
 import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth'; // Import your useAuth hook
 
 export default function Home() {
+  const { user } = useAuth(); // Get the user object from useAuth hook
+
   return (
     <div>
       {/* Hero Section */}
@@ -22,13 +25,23 @@ export default function Home() {
               Discover our handcrafted burgers, artisanal pizzas, and signature dishes
               made with premium ingredients.
             </p>
-            <Link
-              to="/menu"
-              className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
-            >
-              View Menu
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            {user ? (
+              <Link
+                to="/cart"
+                className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
+              >
+                View Cart
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            ) : (
+              <Link
+                to="/menu"
+                className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
+              >
+                View Menu
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            )}
             <Link
               to="/resturant-seating"
               className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg ml-2 font-semibold hover:bg-indigo-700 transition-colors"
@@ -59,9 +72,18 @@ export default function Home() {
                     <span className="text-lg font-bold text-indigo-600">
                       ${item.price.toFixed(2)}
                     </span>
-                    <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                      Add to Cart
-                    </button>
+                    {user ? (
+                      <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Add to Cart
+                      </button>
+                    ) : (
+                      <Link
+                        to="/menu"
+                        className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                      >
+                        View Menu
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
