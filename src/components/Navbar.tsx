@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Utensils, Menu, X, ShoppingCart, LogIn } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useOrder } from '../hooks/useCart';  // Import the useOrder hook
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { user, signOut } = useAuth();
   const { items } = useOrder();  // Get the cart items from useOrder
+  const navigate = useNavigate();  // Use useNavigate to redirect
 
   const navigation = [
     { name: 'Home', path: '/' },
@@ -19,6 +21,25 @@ export default function Navbar() {
 
   // Calculate the total quantity of items in the cart
   const cartItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handleSignOut = () => {
+    // Use SweetAlert2 to confirm sign-out
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to sign out?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, sign out!',
+      cancelButtonText: 'No, keep me logged in',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOut(); // Perform the sign out action
+        Swal.fire('Signed out!', 'You have been signed out successfully.', 'success');
+        navigate('/'); // Redirect to homepage after signing out
+      }
+    });
+  };
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -46,21 +67,33 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <Link
-              to="/cart"
-              className="relative text-gray-700 hover:text-indigo-600"
-            >
-              <ShoppingCart className="w-6 h-6" />
-              {/* Display the cart item count at the top right corner */}
-              {cartItemCount > 0 && (
-                <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </Link>
+
+            {/* Cart link - only visible if the user is logged in */}
+            {user ? (
+              <Link
+                to="/cart"
+                className="relative text-gray-700 hover:text-indigo-600"
+              >
+                <ShoppingCart className="w-6 h-6" />
+                {/* Display the cart item count at the top right corner */}
+                {cartItemCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="text-gray-700 hover:text-indigo-600"
+              >
+               <ShoppingCart className="w-6 h-6" />
+              </Link>
+            )}
+
             {user ? (
               <button
-                onClick={signOut}
+                onClick={handleSignOut} // Call handleSignOut for sign-out
                 className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
               >
                 Sign Out
@@ -110,23 +143,36 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <Link
-              to="/cart"
-              className="relative flex items-center gap-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium"
-              onClick={() => setIsOpen(false)}
-            >
+
+            {/* Cart link - only visible if the user is logged in */}
+            {user ? (
+              <Link
+                to="/cart"
+                className="relative flex items-center gap-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                <ShoppingCart className="w-6 h-6" />
+                <span>Cart</span>
+                {cartItemCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="px-3 py-2 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+                onClick={() => setIsOpen(false)}
+              >
               <ShoppingCart className="w-6 h-6" />
-              <span>Cart</span>
-              {cartItemCount > 0 && (
-                <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </Link>
+              </Link>
+            )}
+
             {user ? (
               <button
                 onClick={() => {
-                  signOut();
+                  handleSignOut(); // Call handleSignOut for sign-out
                   setIsOpen(false);
                 }}
                 className="w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
@@ -149,4 +195,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
 

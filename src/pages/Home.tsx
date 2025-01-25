@@ -1,9 +1,41 @@
-import { ArrowRight, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth'; // Import your useAuth hook
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook to programmatically navigate
+import { useLoader } from '../context/LoaderContext'; // Import useLoader to manage loader state
+import { ArrowRight, Star } from 'lucide-react'; // Import the necessary icons
 
 export default function Home() {
   const { user } = useAuth(); // Get the user object from useAuth hook
+  const navigate = useNavigate(); // Use navigate to programmatically navigate
+  const { setLoading } = useLoader(); // Access setLoading from LoaderContext
+
+  // Function to handle the navigation when the user clicks "View Menu"
+  const handleViewMenuClick = () => {
+    if (!user) {
+      navigate('/login'); // Navigate to login page if user is not logged in
+    } else {
+      navigate('/menu'); // Navigate to the menu page if user is logged in
+    }
+  };
+
+  // Function to handle the "Book Reservation" button click
+  const handleBookReservationClick = () => {
+    if (!user) {
+      navigate('/login'); // Navigate to login page if user is not logged in
+    } else {
+      navigate('/resturant-seating'); // Navigate to the reservation page if user is logged in
+    }
+  };
+
+  useEffect(() => {
+    // Simulate a loading state (e.g., when data is being fetched)
+    setLoading(true);
+
+    // Simulate an API call or data fetching
+    setTimeout(() => {
+      setLoading(false); // Stop loading after 3 seconds
+    }, 3000);
+  }, [setLoading]);
 
   return (
     <div>
@@ -25,30 +57,28 @@ export default function Home() {
               Discover our handcrafted burgers, artisanal pizzas, and signature dishes
               made with premium ingredients.
             </p>
-            {user ? (
-              <Link
-                to="/cart"
-                className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
-              >
-                View Cart
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            ) : (
-              <Link
-                to="/menu"
-                className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
-              >
-                View Menu
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            )}
-            <Link
-              to="/resturant-seating"
+            <button
+              onClick={handleViewMenuClick}
+              className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
+            >
+              {user ? (
+                <>View Menu <ArrowRight className="w-5 h-5" /></>
+              ) : (
+                <>Login to View Menu <ArrowRight className="w-5 h-5" /></>
+              )}
+            </button>
+
+            {/* Book Reservation Button */}
+            <button
+              onClick={handleBookReservationClick}
               className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg ml-2 font-semibold hover:bg-indigo-700 transition-colors"
             >
-              Book Reservation
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+              {user ? (
+                <>Book Reservation <ArrowRight className="w-5 h-5" /></>
+              ) : (
+                <>Login to Book Reservation <ArrowRight className="w-5 h-5" /></>
+              )}
+            </button>
           </div>
         </div>
       </section>
@@ -58,6 +88,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Items</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Map through your featured items */}
             {featuredItems.map((item) => (
               <div key={item.name} className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <img
@@ -77,12 +108,12 @@ export default function Home() {
                         Add to Cart
                       </button>
                     ) : (
-                      <Link
-                        to="/menu"
+                      <button
+                        onClick={handleViewMenuClick}
                         className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                       >
                         View Menu
-                      </Link>
+                      </button>
                     )}
                   </div>
                 </div>
@@ -97,15 +128,14 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Map through reviews */}
             {reviews.map((review) => (
               <div key={review.name} className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex items-center gap-2 mb-4">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-5 h-5 ${
-                        i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                      }`}
+                      className={`w-5 h-5 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
                     />
                   ))}
                 </div>
