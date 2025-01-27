@@ -21,16 +21,28 @@ const RestaurantSeating: React.FC = () => {
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [tables, setTables] = useState<Table[]>([
-    { id: 1, seats: 2, isOccupied: false, section: 'Indoor', position: 'left' },
-    { id: 2, seats: 4, isOccupied: true, section: 'Indoor', position: 'center' },
-    { id: 3, seats: 6, isOccupied: false, section: 'Outdoor', position: 'right' },
-    { id: 4, seats: 2, isOccupied: false, section: 'Poolside', position: 'left' },
-    { id: 5, seats: 4, isOccupied: false, section: 'Rooftop', position: 'center' },
-    { id: 6, seats: 6, isOccupied: true, section: 'Rooftop', position: 'right' },
-    { id: 7, seats: 2, isOccupied: false, section: 'Indoor', position: 'left' },
-    { id: 8, seats: 4, isOccupied: false, section: 'Poolside', position: 'center' },
-    { id: 9, seats: 6, isOccupied: false, section: 'Outdoor', position: 'right' }
+    { id: 1, seats: 2, isOccupied: false, section: 'Indoor 🏠', position: 'left' },
+    { id: 2, seats: 4, isOccupied: true, section: 'Indoor 🏠', position: 'center' },
+    { id: 3, seats: 6, isOccupied: false, section: 'Outdoor 🌳', position: 'right' },
+    { id: 4, seats: 2, isOccupied: false, section: 'Poolside 🏖️', position: 'left' },
+    { id: 5, seats: 4, isOccupied: false, section: 'Rooftop 🌆', position: 'center' },
+    { id: 6, seats: 6, isOccupied: true, section: 'Rooftop 🌆', position: 'right' },
+    { id: 7, seats: 2, isOccupied: false, section: 'Indoor 🏠', position: 'left' },
+    { id: 8, seats: 4, isOccupied: false, section: 'Poolside 🏖️', position: 'center' },
+    { id: 9, seats: 6, isOccupied: false, section: 'Outdoor 🌳', position: 'right' },
+    { id: 10, seats: 2, isOccupied: false, section: 'Indoor 🏠', position: 'right' },
+    { id: 11, seats: 4, isOccupied: true, section: 'Outdoor 🌳', position: 'left' },
+    { id: 12, seats: 6, isOccupied: false, section: 'Rooftop 🌆', position: 'center' },
+    { id: 13, seats: 4, isOccupied: false, section: 'Poolside 🏖️', position: 'right' },
+    { id: 14, seats: 6, isOccupied: false, section: 'Indoor 🏠', position: 'center' },
+    { id: 15, seats: 2, isOccupied: false, section: 'Outdoor 🌳', position: 'left' },
+    { id: 16, seats: 4, isOccupied: true, section: 'Indoor 🏠', position: 'right' },
+    { id: 17, seats: 6, isOccupied: false, section: 'Poolside 🏖️', position: 'left' },
+    { id: 18, seats: 4, isOccupied: false, section: 'Rooftop 🌆', position: 'right' },
+    { id: 19, seats: 2, isOccupied: false, section: 'Outdoor 🌳', position: 'center' },
+    { id: 20, seats: 4, isOccupied: true, section: 'Rooftop 🌆', position: 'left' }
   ]);
+  
 
   const [reservation, setReservation] = useState<Reservation>({
     name: '',
@@ -95,22 +107,24 @@ const RestaurantSeating: React.FC = () => {
       {/* Restaurant Tables Layout */}
       <div className="flex flex-wrap justify-center gap-8 mb-8">
         {tables.map((table) => (
-          <div
-            key={table.id}
-            className={`w-40 h-40 flex items-center justify-center 
-              ${table.isOccupied ? 'bg-red-500' : 'bg-green-500'} 
-              rounded-lg cursor-pointer transition-transform transform hover:scale-105 backdrop-blur-lg bg-opacity-20 border-2 border-stone-200 shadow-lg`}
-            onClick={() => handleTableClick(table)}
-          >
-            <div className="text-center text-white">
-              <p><strong>Table {table.id}</strong></p>
-              <p>{table.seats} seats</p>
-              <p>{table.section}</p>
-              <p className={`text-sm`}>
-                {table.isOccupied ? 'Occupied' : 'Available'}
-              </p>
-            </div>
-          </div>
+         <div
+         key={table.id}
+         className={`w-40 h-40 flex items-center justify-center 
+           ${table.isOccupied ? 'bg-red-400 text-white shadow-[0_0_8px_#ff4d4d,0_0_12px_#ff4d4d,0_0_20px_#ff4d4d]' : 'bg-green-400 text-white shadow-[0_0_8px_#66ff66,0_0_12px_#66ff66,0_0_20px_#66ff66]'} 
+           rounded-lg cursor-pointer transition-transform transform hover:scale-105 border-2 border-stone-200 shadow-lg`}
+         onClick={() => handleTableClick(table)}
+       >
+         <div className="text-center">
+           <p><strong>Table {table.id}</strong></p>
+           <p>{table.seats} seats</p>
+           <p>{table.section}</p>
+           <p className={`text-sm`}>
+             {table.isOccupied ? 'Occupied' : 'Available'}
+           </p>
+         </div>
+       </div>
+       
+       
         ))}
       </div>
 

@@ -1,46 +1,67 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth'; // Import your useAuth hook
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook to programmatically navigate
-import { useLoader } from '../context/LoaderContext'; // Import useLoader to manage loader state
-import { ArrowRight, Star } from 'lucide-react'; // Import the necessary icons
+import { useAuth } from '../hooks/useAuth';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLoader } from '../context/LoaderContext';
+import { ArrowRight, Star } from 'lucide-react';
 
 export default function Home() {
-  const { user } = useAuth(); // Get the user object from useAuth hook
-  const navigate = useNavigate(); // Use navigate to programmatically navigate
-  const { setLoading } = useLoader(); // Access setLoading from LoaderContext
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { setLoading } = useLoader();
 
-  // Function to handle the navigation when the user clicks "View Menu"
   const handleViewMenuClick = () => {
     if (!user) {
-      navigate('/login'); // Navigate to login page if user is not logged in
+      navigate('/login');
     } else {
-      navigate('/menu'); // Navigate to the menu page if user is logged in
+      navigate('/menu');
     }
   };
 
-  // Function to handle the "Book Reservation" button click
   const handleBookReservationClick = () => {
     if (!user) {
-      navigate('/login'); // Navigate to login page if user is not logged in
+      navigate('/login');
     } else {
-      navigate('/resturant-seating'); // Navigate to the reservation page if user is logged in
+      navigate('/resturant-seating');
     }
   };
 
   useEffect(() => {
-    // Simulate a loading state (e.g., when data is being fetched)
     setLoading(true);
 
-    // Simulate an API call or data fetching
     setTimeout(() => {
-      setLoading(false); // Stop loading after 3 seconds
+      setLoading(false);
     }, 3000);
+
+    const observer = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+          const section = entry.target as HTMLElement;
+
+          if (entry.isIntersecting) {
+            section.classList.add('animate-fadeIn');
+          } else {
+            section.classList.remove('animate-fadeIn');
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    // Select all sections to observe
+    const sections = document.querySelectorAll('.section');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      // Clean up observer when component unmounts
+      observer.disconnect();
+    };
   }, [setLoading]);
 
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[90vh] bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <section className="relative h-[90vh] bg-gradient-to-r from-gray-900 to-gray-800 text-white section">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=2000"
@@ -68,7 +89,6 @@ export default function Home() {
               )}
             </button>
 
-            {/* Book Reservation Button */}
             <button
               onClick={handleBookReservationClick}
               className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg ml-2 font-semibold hover:bg-indigo-700 transition-colors"
@@ -84,11 +104,10 @@ export default function Home() {
       </section>
 
       {/* Featured Items */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Items</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Map through your featured items */}
             {featuredItems.map((item) => (
               <div key={item.name} className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <img
@@ -105,7 +124,9 @@ export default function Home() {
                     </span>
                     {user ? (
                       <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                        Add to Cart
+                        <Link to={'menu'}>
+                          view Menu
+                        </Link>
                       </button>
                     ) : (
                       <button
@@ -124,11 +145,10 @@ export default function Home() {
       </section>
 
       {/* Reviews Section */}
-      <section className="py-16">
+      <section className="py-16 section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Map through reviews */}
             {reviews.map((review) => (
               <div key={review.name} className="bg-white p-6 rounded-xl shadow-lg">
                 <div className="flex items-center gap-2 mb-4">
