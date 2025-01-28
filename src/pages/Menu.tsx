@@ -3,7 +3,7 @@ import { useOrder } from '../hooks/useCart';
 import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-
+import { useNavigate } from 'react-router-dom';
 interface MenuItem {
   id: string;
   name: string;
@@ -18,14 +18,22 @@ export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const { addToCart } = useOrder();
   const { user } = useAuth();
-
+  const navigate = useNavigate(); 
+  const handleCategoryClick = (categoryId: string) => {
+    if (categoryId === 'meal-builder') {
+      navigate('/meal-builder'); // Redirect to the Meal Builder page
+    } else {
+      setSelectedCategory(categoryId); // Update selected category for other options
+    }
+  };
   const categories = [
     { id: 'all', name: 'All Items' },
     { id: 'burgers', name: 'Burgers' },
     { id: 'pizzas', name: 'Pizzas' },
     { id: 'chicken', name: 'Chicken' },
     { id: 'sides', name: 'Sides' },
-    { id: 'drinks', name: 'Drinks' }
+    { id: 'drinks', name: 'Drinks' },
+    { id: 'meal-builder', name: 'Meal Builder' }
   ];
 
   const menuItems: MenuItem[] = [
@@ -253,19 +261,19 @@ export default function Menu() {
 
       {/* Category Filter */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
-        {categories.map(category => (
-          <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.id)}
-            className={`px-4 py-2 rounded-full ${
-              selectedCategory === category.id
-                ? 'bg-indigo-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            {category.name}
-          </button>
-        ))}
+      {categories.map(category => (
+  <button
+    key={category.id}
+    onClick={() => handleCategoryClick(category.id)}
+    className={`px-4 py-2 rounded-full ${
+      selectedCategory === category.id
+        ? 'bg-indigo-600 text-white'
+        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+    }`}
+  >
+    {category.name}
+  </button>
+))}
       </div>
 
       {/* Menu Items Grid */}

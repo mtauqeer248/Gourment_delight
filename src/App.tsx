@@ -13,6 +13,7 @@ import FAQ from './pages/FAQ';
 import RestaurantSeating from './components/Table-Reservation';
 import OrderTracker from './components/OrderTracker';
 import AboutPage from './pages/About';
+import MealDisplayPage from './components/MealBuilder/index';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/resturant-seating" element={<RestaurantSeating />} />
                   <Route path="/order-tracker" element={<OrderTracker />} />
+                  <Route path="/meal-builder" element={<MealDisplayPage />} />
                 </Routes>
               </main>
               <Footer />
