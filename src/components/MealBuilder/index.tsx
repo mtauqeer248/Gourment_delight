@@ -187,6 +187,11 @@ function MealDisplayPage() {
             if (index !== -1) {
               newComponents.pizza.toppings[index].quantity = Math.max(0, quantity);
             }
+          }else if (componentType === 'cheeses') {
+            const index = newComponents.burger.cheeses.findIndex(c => c.id === component.id);
+            if (index !== -1) {
+              newComponents.burger.cheeses[index].quantity = Math.max(0, quantity);
+            }
           }
           break;
 
@@ -424,6 +429,7 @@ function MealDisplayPage() {
       case 'pizza':
         if (meal.crust) total += meal.crust.price;
         if (meal.sauce) total += meal.sauce.price;
+        meal.cheeses.forEach((cheese: { price: number; }) => total += cheese.price); 
         meal.toppings.forEach((topping: { price: number; }) => total += topping.price);
         break;
       case 'fries':
