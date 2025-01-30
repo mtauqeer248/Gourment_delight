@@ -21,8 +21,6 @@ import type {
   FriesTopping,
   DrinkComponent
 } from './types';
-import { string } from 'three/examples/jsm/nodes/Nodes.js';
-
 function MealDisplayPage() {
   const [selectedMealType, setSelectedMealType] = useState<MealType>('burger');
   const [selectedComponents, setSelectedComponents] = useState<MealState>({
@@ -122,6 +120,9 @@ function MealDisplayPage() {
             newComponents.pizza.crust = component as Crust;
           } else if (componentType === 'sauces' && !newComponents.pizza.sauce) {
             newComponents.pizza.sauce = component as Sauce;
+          }else if (componentType === 'cheeses' && !newComponents.burger.cheeses.find(cheese => cheese.id === component.id)) {
+              const newCheese = { ...component as Cheese, quantity: 1 };
+              newComponents.burger.cheeses.push(newCheese);
           } else if (componentType === 'toppings' && !newComponents.pizza.toppings.find(topping => topping.id === component.id)) {
             const newTopping = { ...component as PizzaTopping, quantity: 1 };
             newComponents.pizza.toppings.push(newTopping);

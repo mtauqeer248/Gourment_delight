@@ -1,9 +1,43 @@
-export type MealType = 'burger' | 'pizza' | 'fries' | 'drink';
-export type DrinkType = 'soda' | 'milkshake' | 'iced-tea';
+export type MealType = 'burger' | 'pizza' | 'fries' | 'drink'  // Added 'juice'
+
+// Drink Types
+export type DrinkType = 'soda' | 'milkshake' | 'iced-tea' | 'juice'; // Added 'juice'
+
+// Drink Size
 export type DrinkSize = 'small' | 'medium' | 'large';
-export type SodaFlavor = 'cola' | 'lemon-lime' | 'orange' | 'root-beer';
-export type MilkshakeFlavor = 'vanilla' | 'chocolate' | 'strawberry' | 'cookie-dough';
-export type TeaFlavor = 'lemon' | 'peach' | 'raspberry';
+
+// Soda Flavors
+export type SodaFlavor = 
+  | 'cola' 
+  | 'lemon-lime' 
+  | 'root-beer' 
+  | 'sprite' 
+  | 'fanta' 
+  | 'pepsi'; 
+
+// Milkshake Flavors
+export type MilkshakeFlavor = 
+  | 'vanilla' 
+  | 'chocolate' 
+  | 'strawberry' 
+  | 'cookie-dough' 
+  | 'banana' 
+  | 'peach' 
+  | 'mango'; 
+
+// Iced Tea Flavors
+export type TeaFlavor = 
+  | 'lemon' 
+  | 'peach tea' 
+  | 'raspberry tea';
+
+// Juice Flavors
+export type JuiceFlavor = 
+  | 'apple' 
+  | 'orange' 
+  | 'grape' 
+  | 'pineapple' 
+  | 'carrot';  // You can add more juice types as needed
 
 export interface FoodComponent {
   id: number;
@@ -14,13 +48,14 @@ export interface FoodComponent {
 
 // 🍔 Burger Components
 export interface Bun extends FoodComponent { type: 'bun'; }
-export interface Patty extends FoodComponent { type: 'patty'; }
+export interface Patty extends FoodComponent { type: 'patty';quantity:number }
 export interface Cheese extends FoodComponent { type: 'cheese'; quantity: number; }
 export interface BurgerTopping extends FoodComponent { type: 'burgerTopping'; quantity: number; }
 
 // 🍕 Pizza Components
 export interface Crust extends FoodComponent { type: 'crust'; }
 export interface Sauce extends FoodComponent { type: 'sauce'; }
+export interface Cheese extends FoodComponent { type: 'cheese'; quantity: number; }
 export interface PizzaTopping extends FoodComponent { type: 'pizzaTopping'; quantity: number; }
 
 // 🍟 Fries Components
@@ -40,7 +75,7 @@ export interface DrinkSizeComponent extends FoodComponent {
 
 export interface DrinkFlavorComponent extends FoodComponent {
   type: 'drinkFlavor';
-  flavorType: SodaFlavor | MilkshakeFlavor | TeaFlavor;
+  flavorType: SodaFlavor | MilkshakeFlavor | TeaFlavor | JuiceFlavor; // Added JuiceFlavor
 }
 
 export type DrinkComponent = DrinkTypeComponent | DrinkSizeComponent | DrinkFlavorComponent;
@@ -71,7 +106,7 @@ export interface FriesState {
 export interface DrinkState {
   type: DrinkType | null;
   size: DrinkSize | null;
-  flavor: SodaFlavor | MilkshakeFlavor | TeaFlavor | null;
+  flavor: SodaFlavor | MilkshakeFlavor | TeaFlavor | JuiceFlavor | null; // Updated to include JuiceFlavor
 }
 
 // 🥘 Meal State
@@ -100,6 +135,7 @@ export type MealComponents = {
       sauces: Sauce[];
       toppings: PizzaTopping[];
       specials?: PizzaTopping[];
+      cheeses?: Cheese[];
     };
   };
   fries: {
@@ -113,9 +149,10 @@ export type MealComponents = {
   drink: {
     name: 'Drink';
     components: {
-      types: DrinkTypeComponent[];
+      types: DrinkTypeComponent[]; // This now includes 'juice'
       sizes: DrinkSizeComponent[];
-      flavors: DrinkFlavorComponent[];
+      flavors: DrinkFlavorComponent[]; // Flavors now include juices as well
     };
   };
 };
+

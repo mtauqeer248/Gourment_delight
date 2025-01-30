@@ -63,21 +63,24 @@ export const ComponentSelector = <T extends MealType>({
       <div key={componentType} className="bg-white p-6 rounded-xl border">
         <h3 className="text-xl font-bold mb-4">{title}</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {options.map((option) => {
-            if (componentType === 'flavors' && selectedComponents?.type) {
-              const allowedFlavors: Record<string, string[]> = {
-                soda: ['cola', 'lemon-lime', 'orange', 'root-beer'],
-                milkshake: ['vanilla', 'chocolate', 'strawberry', 'cookie-dough'],
-                'iced-tea': ['lemon', 'peach', 'raspberry'],
-              };
-            
-              const drinkType = selectedComponents.type ?? ''; // Ensure it's a string
-              const flavorType = option.flavorType ?? ''; // Ensure it's a string
-            
-              if (!allowedFlavors[drinkType]?.includes(flavorType)) {
-                return null; // Skip invalid flavors
-              }
-            }
+        {options.map((option) => {
+  if (componentType === 'flavors' && selectedComponents?.type) {
+    const allowedFlavors: Record<string, string[]> = {
+      soda: ['cola', 'lemon-lime', 'root-beer', 'sprite', 'fanta', 'pepsi'], // Added new soda flavors
+      milkshake: ['vanilla', 'chocolate', 'strawberry', 'cookie-dough', 'banana', 'peach', 'mango'], // Added new milkshake flavors
+      'iced-tea': ['lemon', 'peach tea', 'raspberry tea'], // No changes needed here
+      juice: ['apple', 'orange', 'grape', 'pineapple', 'carrot'], // Added juice flavors
+    }
+
+    const drinkType = selectedComponents.type ?? ''; // Ensure it's a string
+    const flavorType = option.flavorType ?? ''; // Ensure it's a string
+
+    console.log(drinkType, flavorType); // Debugging to verify values
+
+    if (!allowedFlavors[drinkType]?.includes(flavorType)) {
+      return null; // Skip invalid flavors
+    }
+  }
             
             return (
               <button
