@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { mealConfig } from './config/mealConfig';
 import { ComponentSelector } from './ComponentSelector';
 import { Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type {
   MealType,
   MealState,
@@ -21,7 +21,11 @@ import type {
   FriesTopping,
   DrinkComponent
 } from './types';
+import { useOrder } from '../../hooks/useCart';
+
 function MealDisplayPage() {
+  const { addToCart } = useOrder();
+  const navigate = useNavigate();
   const [selectedMealType, setSelectedMealType] = useState<MealType>('burger');
   const [selectedComponents, setSelectedComponents] = useState<MealState>({
     burger: {
@@ -91,8 +95,97 @@ function MealDisplayPage() {
     });
   };
 
+  // Format the selected meal components into a cart item format
+  const formatMealForCart = () => {
+    const mealItem = {
+      mealType: selectedMealType,
+      components: selectedComponents[selectedMealType],
+      price: calculateMealPrice()
+    };
+    return mealItem;
+  };
+
+  const calculateMealPrice = () => {
+    // Implement price calculation logic here based on selected components
+    let price = 0;
+    switch (selectedMealType) {
+      case 'burger':
+        // Base price for a burger
+        if (selectedComponents.burger.bun) price += selectedComponents.burger.bun.price;
+        if (selectedComponents.burger.patty) price += selectedComponents.burger.patty.price;
+        price += selectedComponents.burger.cheeses.reduce((total, cheese) => total + cheese.price, 0);
+        price += selectedComponents.burger.toppings.reduce((total, topping) => total + topping.price, 0);
+        break;
+      case 'pizza':
+      // Base price for pizza
+        if (selectedComponents.pizza.crust) price += selectedComponents.pizza.crust.price;
+        if (selectedComponents.pizza.sauce) price += selectedComponents.pizza.sauce.price;
+        price += selectedComponents.pizza.cheeses.reduce((total, cheese) => total + cheese.price, 0);
+        price += selectedComponents.pizza.toppings.reduce((total, topping) => total + topping.price, 0);
+        break;
+      case 'fries':
+       // Base price for fries
+        if (selectedComponents.fries.type) price += selectedComponents.fries.type.price;
+        price += selectedComponents.fries.toppings.reduce((total, topping) => total + topping.price, 0);
+        break;
+      case 'drink':
+        // Base price for drink
+        if (selectedComponents.drink.size) price += selectedComponents.drink.size.price;
+        break;
+      default:
+        price = 0;
+        break;
+    }
+    return price;
+  };
+
+  const handleAddToCart = () => {
+    // Validate that required components are selected
+    let isValid = true;
+    let errorMessage = '';
+  
+    switch (selectedMealType) {
+      case 'burger':
+        if (!selectedComponents.burger.bun || !selectedComponents.burger.patty) {
+          isValid = false;
+          errorMessage = 'Please select both a bun and a patty for your burger';
+        }
+        break;
+      case 'pizza':
+        if (!selectedComponents.pizza.crust || !selectedComponents.pizza.sauce) {
+          isValid = false;
+          errorMessage = 'Please select both a crust and sauce for your pizza';
+        }
+        break;
+      case 'fries':
+        if (!selectedComponents.fries.type) {
+          isValid = false;
+          errorMessage = 'Please select a type of fries';
+        }
+        break;
+      case 'drink':
+        if (!selectedComponents.drink.type || !selectedComponents.drink.size || !selectedComponents.drink.flavor) {
+          isValid = false;
+          errorMessage = 'Please select a type, size, and flavor for your drink';
+        }
+        break;
+    }
+  
+    if (!isValid) {
+      alert(errorMessage);
+      return;
+    }
+  
+    const mealItem = formatMealForCart();
+    addToCart(mealItem); // Add formatted meal to the cart
+    navigate('/cart');
+  };
+
+ 
 
 
+  
+  
   const handleComponentSelect = (
     componentType: string,
     component: FoodComponent
@@ -415,6 +508,7 @@ function MealDisplayPage() {
   };
 
   const calculateTotalPrice = () => {
+    
     let total = 0;
     const meal = selectedComponents[selectedMealType];
 
@@ -500,7 +594,7 @@ function MealDisplayPage() {
             >
               <Trash2 size={16} /> Remove Meal
             </button>
-            <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+            <button onClick={handleAddToCart} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
               Add to Cart
             </button>
             <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">

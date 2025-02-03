@@ -26,37 +26,7 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
-    const observer = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]) => {
-        entries.forEach((entry) => {
-          const section = entry.target as HTMLElement;
-
-          if (entry.isIntersecting) {
-            section.classList.add('animate-fadeIn');
-          } else {
-            section.classList.remove('animate-fadeIn');
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    // Select all sections to observe
-    const sections = document.querySelectorAll('.section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      // Clean up observer when component unmounts
-      observer.disconnect();
-    };
-  }, [setLoading]);
+ 
 
   return (
     <div>
@@ -78,27 +48,30 @@ export default function Home() {
               Discover our handcrafted burgers, artisanal pizzas, and signature dishes
               made with premium ingredients.
             </p>
-            <button
-              onClick={handleViewMenuClick}
-              className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors"
-            >
-              {user ? (
-                <>View Menu <ArrowRight className="w-5 h-5" /></>
-              ) : (
-                <>Login to View Menu <ArrowRight className="w-5 h-5" /></>
-              )}
-            </button>
+            <div className="flex flex-col md:flex-row gap-4">
+  <button
+    onClick={handleViewMenuClick}
+    className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors w-full md:w-auto"
+  >
+    {user ? (
+      <>View Menu <ArrowRight className="w-5 h-5" /></>
+    ) : (
+      <>Login to View Menu <ArrowRight className="w-5 h-5" /></>
+    )}
+  </button>
 
-            <button
-              onClick={handleBookReservationClick}
-              className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg ml-2 font-semibold hover:bg-indigo-700 transition-colors"
-            >
-              {user ? (
-                <>Book Reservation <ArrowRight className="w-5 h-5" /></>
-              ) : (
-                <>Login to Book Reservation <ArrowRight className="w-5 h-5" /></>
-              )}
-            </button>
+  <button
+    onClick={handleBookReservationClick}
+    className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors w-full md:w-auto"
+  >
+    {user ? (
+      <>Book Reservation <ArrowRight className="w-5 h-5" /></>
+    ) : (
+      <>Login to Book Reservation <ArrowRight className="w-5 h-5" /></>
+    )}
+  </button>
+</div>
+
           </div>
         </div>
       </section>

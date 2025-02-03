@@ -1,3 +1,4 @@
+import React from 'react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useOrder } from '../hooks/useCart';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,9 +7,16 @@ export default function Cart() {
   const { items, removeFromCart, updateQuantity, total, createOrder } = useOrder();
   const navigate = useNavigate();
 
+  // Helper function to safely format prices
+  const formatPrice = (price: string | number) => {
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+    return !isNaN(numPrice) ? numPrice.toFixed(2) : '0.00';
+  };
+
   const handleCheckout = () => {
+    // This is where you would trigger order creation, e.g., sending data to an API or processing payment
     createOrder(total);
-    navigate('/order-tracker');
+    navigate('/order-tracker'); // Navigate to the order tracking page after checkout
   };
 
   if (items.length === 0) {
@@ -47,7 +55,7 @@ export default function Cart() {
                 />
                 <div className="flex-1">
                   <h3 className="font-semibold">{item.name}</h3>
-                  <p className="text-gray-600">${item.price.toFixed(2)}</p>
+                  <p className="text-gray-600">${formatPrice(item.price)}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
@@ -82,7 +90,7 @@ export default function Cart() {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${total.toFixed(2)}</span>
+                <span>${formatPrice(total)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Delivery Fee</span>
@@ -91,7 +99,7 @@ export default function Cart() {
               <div className="border-t pt-2 mt-2">
                 <div className="flex justify-between font-bold">
                   <span>Total</span>
-                  <span>${(total + 5).toFixed(2)}</span>
+                  <span>${formatPrice(total + 5)}</span>
                 </div>
               </div>
             </div>
@@ -99,7 +107,7 @@ export default function Cart() {
               onClick={handleCheckout}
               className="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700"
             >
-              Proceed Checkout
+              Proceed to Checkout
             </button>
           </div>
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 // CartItem interface
@@ -20,7 +21,7 @@ interface OrderDetails {
 interface OrderContextType {
   currentOrder: OrderDetails | null;
   items: CartItem[];
-  addToCart: (item: CartItem) => void;
+  addToCart: (mealItem: any) => void; // Here we specify `mealItem` as `any` or you can define its specific type
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -68,34 +69,46 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
     }
   }, [currentOrder]);
 
-  // Cart methods
-  const addToCart = useCallback((item: CartItem) => {
-    setItems(currentItems => {
-      const existingItem = currentItems.find(cartItem => cartItem.id === item.id);
-      
-      if (existingItem) {
-        return currentItems.map(cartItem => 
-          cartItem.id === item.id 
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
-      }
-      
-      return [...currentItems, item];
-    });
+  // Function to format meal for cart
+  const formatMealForCart = useCallback((meal: any): CartItem => {
+    return {
+      id: meal.id,
+      name: meal.name,
+      price: meal.price,
+      quantity: 1, // Default to quantity 1 when added
+      image: meal.image || 'default-image-url', // Fallback image URL
+    };
   }, []);
 
+  // Cart methods
+  const addToCart = useCallback((mealItem: any) => {
+    const formattedMeal = formatMealForCart(mealItem);
+
+    setItems((currentItems) => {
+      const existingItem = currentItems.find((item) => item.id === formattedMeal.id);
+
+      if (existingItem) {
+        return currentItems.map((item) =>
+          item.id === formattedMeal.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...currentItems, formattedMeal];
+    });
+  }, [formatMealForCart]);
+
   const removeFromCart = useCallback((itemId: string) => {
-    setItems(currentItems => currentItems.filter(item => item.id !== itemId));
+    setItems((currentItems) => currentItems.filter((item) => item.id !== itemId));
   }, []);
 
   const updateQuantity = useCallback((itemId: string, quantity: number) => {
-    setItems(currentItems => 
+    setItems((currentItems) =>
       quantity > 0
-        ? currentItems.map(item => 
+        ? currentItems.map((item) =>
             item.id === itemId ? { ...item, quantity } : item
           )
-        : currentItems.filter(item => item.id !== itemId)
+        : currentItems.filter((item) => item.id !== itemId)
     );
   }, []);
 
@@ -103,39 +116,43 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
     setItems([]);
   }, []);
 
+  // Calculate total
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   // Order methods
   const createOrder = useCallback((total: number) => {
     const orderId = Math.random().toString(36).substring(2, 10).toUpperCase();
-    
     const newOrder: OrderDetails = {
       id: orderId,
       items,
       total,
       status: 'preparing',
-      estimatedTime: 30
+      estimatedTime: 30,
     };
-    
+
     setCurrentOrder(newOrder);
     clearCart(); // Clear cart after creating order
   }, [items, clearCart]);
 
   const updateOrderStatus = useCallback(() => {
     if (!currentOrder) return;
-    
+
     const statusProgression: Array<OrderDetails['status']> = [
       'preparing', 'cooking', 'ready', 'delivered'
     ];
-    
+
     const currentIndex = statusProgression.indexOf(currentOrder.status);
-    
+
     if (currentIndex < statusProgression.length - 1) {
-      setCurrentOrder(prev => prev ? {
-        ...prev,
-        status: statusProgression[currentIndex + 1],
-        estimatedTime: Math.max(0, (prev.estimatedTime || 30) - 10)
-      } : null);
+      setCurrentOrder((prev) =>
+        prev
+          ? {
+              ...prev,
+              status: statusProgression[currentIndex + 1],
+              estimatedTime: Math.max(0, (prev.estimatedTime || 30) - 10),
+            }
+          : null
+      );
     }
   }, [currentOrder]);
 
@@ -144,18 +161,20 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <OrderContext.Provider value={{
-      currentOrder,
-      items,
-      addToCart,
-      removeFromCart,
-      updateQuantity,
-      clearCart,
-      createOrder,
-      updateOrderStatus,
-      clearCurrentOrder,
-      total
-    }}>
+    <OrderContext.Provider
+      value={{
+        currentOrder,
+        items,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        createOrder,
+        updateOrderStatus,
+        clearCurrentOrder,
+        total,
+      }}
+    >
       {children}
     </OrderContext.Provider>
   );
@@ -168,5 +187,3 @@ export function useOrder() {
   }
   return context;
 }
-
-
