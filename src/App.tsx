@@ -14,6 +14,7 @@ import RestaurantSeating from './components/Table-Reservation';
 import OrderTracker from './components/OrderTracker';
 import AboutPage from './pages/About';
 import MealDisplayPage from './components/MealBuilder/index';
+import ReviewPage from './pages/Review';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                   <Route path="/resturant-seating" element={<RestaurantSeating />} />
                   <Route path="/order-tracker" element={<OrderTracker />} />
                   <Route path="/meal-builder" element={<MealDisplayPage />} />
+                  <Route path="/reviews" element={<ReviewPage />} />
                 </Routes>
               </main>
               <Footer />

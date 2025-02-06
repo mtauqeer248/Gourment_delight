@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import { db, collection, addDoc } from '../lib/firebase'; // Import Firestore functions
 
 interface Table {
   id: number;
@@ -42,7 +44,8 @@ const RestaurantSeating: React.FC = () => {
     { id: 19, seats: 2, isOccupied: false, section: 'Outdoor 🌳', position: 'center' },
     { id: 20, seats: 4, isOccupied: true, section: 'Rooftop 🌆', position: 'left' }
   ]);
-  
+  const [loading, setLoading] = useState<boolean>(false);
+
 
   const [reservation, setReservation] = useState<Reservation>({
     name: '',
@@ -65,30 +68,54 @@ const RestaurantSeating: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     if (selectedTable) {
-      const updatedTables = tables.map((table) =>
-        table.id === selectedTable.id ? { ...table, isOccupied: true } : table
-      );
-      setTables(updatedTables);
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Reservation Successful!',
-        text: `Table ${selectedTable.id} has been booked for ${reservation.name}`,
-        confirmButtonText: 'Great!'
-      });
-
-      setShowForm(false);
-      setSelectedTable(null);
-      setReservation({
-        name: '',
-        email: '',
-        phone: '',
-        time: '',
-        date: ''
-      });
+      setLoading(true);  // Show loading state
+      
+      try {
+        // Save reservation data to Firestore
+        await addDoc(collection(db, "reservations"), {
+          tableId: selectedTable.id,
+          name: reservation.name,
+          email: reservation.email,
+          phone: reservation.phone,
+          time: reservation.time,
+          date: reservation.date,
+          section: selectedTable.section,
+          seats: selectedTable.seats,
+        });
+  
+        const updatedTables = tables.map((table) =>
+          table.id === selectedTable.id ? { ...table, isOccupied: true } : table
+        );
+        setTables(updatedTables);
+  
+        Swal.fire({
+          icon: 'success',
+          title: 'Reservation Successful!',
+          text: `Table ${selectedTable.id} has been booked for ${reservation.name}`,
+          confirmButtonText: 'Great!'
+        });
+  
+        setShowForm(false);
+        setSelectedTable(null);
+        setReservation({
+          name: '',
+          email: '',
+          phone: '',
+          time: '',
+          date: ''
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'There was an issue with your reservation. Please try again later.',
+        });
+      } finally {
+        setLoading(false);  // Hide loading state
+      }
     }
   };
 
@@ -107,37 +134,23 @@ const RestaurantSeating: React.FC = () => {
       {/* Restaurant Tables Layout */}
       <div className="flex flex-wrap justify-center gap-8 mb-8">
         {tables.map((table) => (
-         <div
-         key={table.id}
-         className={`w-40 h-40 flex items-center justify-center 
-           ${table.isOccupied ? 'bg-red-400 text-white shadow-[0_0_8px_#ff4d4d,0_0_12px_#ff4d4d,0_0_20px_#ff4d4d]' : 'bg-green-400 text-white shadow-[0_0_8px_#66ff66,0_0_12px_#66ff66,0_0_20px_#66ff66]'} 
-           rounded-lg cursor-pointer transition-transform transform hover:scale-105 border-2 border-stone-200 shadow-lg`}
-         onClick={() => handleTableClick(table)}
-       >
-         <div className="text-center">
-           <p><strong>Table {table.id}</strong></p>
-           <p>{table.seats} seats</p>
-           <p>{table.section}</p>
-           <p className={`text-sm`}>
-             {table.isOccupied ? 'Occupied' : 'Available'}
-           </p>
-         </div>
-       </div>
-       
-       
+          <div
+            key={table.id}
+            className={`w-40 h-40 flex items-center justify-center 
+              ${table.isOccupied ? 'bg-red-400 text-white shadow-[0_0_8px_#ff4d4d,0_0_12px_#ff4d4d,0_0_20px_#ff4d4d]' : 'bg-green-400 text-white shadow-[0_0_8px_#66ff66,0_0_12px_#66ff66,0_0_20px_#66ff66]'} 
+              rounded-lg cursor-pointer transition-transform transform hover:scale-105 border-2 border-stone-200 shadow-lg`}
+            onClick={() => handleTableClick(table)}
+          >
+            <div className="text-center">
+              <p><strong>Table {table.id}</strong></p>
+              <p>{table.seats} seats</p>
+              <p>{table.section}</p>
+              <p className={`text-sm`}>
+                {table.isOccupied ? 'Occupied' : 'Available'}
+              </p>
+            </div>
+          </div>
         ))}
-      </div>
-
-      {/* Table status legend */}
-      <div className="flex gap-4 justify-center mb-8">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 border-2 border-green-700"></div>
-          <span>Available</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500 border-2 border-red-700"></div>
-          <span>Occupied</span>
-        </div>
       </div>
 
       {/* Reservation Form with Glassmorphism */}
@@ -172,12 +185,13 @@ const RestaurantSeating: React.FC = () => {
                   />
                 </div>
               ))}
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-colors"
-              >
-                Confirm Reservation
-              </button>
+             <button
+  type="submit"
+  disabled={loading}
+  className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-colors"
+>
+  {loading ? 'Saving Reservation...' : 'Confirm Reservation'}
+</button>
               <button
                 type="button"
                 onClick={() => {
@@ -197,8 +211,3 @@ const RestaurantSeating: React.FC = () => {
 };
 
 export default RestaurantSeating;
-
-
-
-
-
