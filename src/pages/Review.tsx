@@ -8,7 +8,7 @@ const ReviewPage = () => {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const reviewsRef = collection(db, "reviews"); // Get reference to "reviews" collection
+      const reviewsRef = collection(db, "reviews"); 
       const snapshot = await getDocs(reviewsRef);
       const reviewsData = snapshot.docs.map((doc) => doc.data());
       setReviews(reviewsData);
@@ -59,7 +59,7 @@ const ReviewPage = () => {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           className="w-full p-3 border rounded-md focus:ring focus:ring-blue-200 resize-none"
-          rows="4"
+         
         />
         <button
           onClick={handleReviewSubmit}

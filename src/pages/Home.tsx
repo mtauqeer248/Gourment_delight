@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoader } from '../context/LoaderContext';
 import { ArrowRight, Star } from 'lucide-react';
+import ChatFloatingButton from '../components/ChatFeature/floatingchat';
 
 export default function Home() {
   const { user } = useAuth();
@@ -149,6 +150,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <ChatFloatingButton/>
     </div>
   );
 }
