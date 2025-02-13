@@ -27,7 +27,7 @@ export default function Cart() {
           <p className="text-gray-600 mb-8">Add some delicious items to your cart!</p>
           <Link
             to="/menu"
-            className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700"
+            className="inline-block bg-[#FF4B2B] text-white px-6 py-3 rounded-lg hover:bg-[#e0451f]"
           >
             View Menu
           </Link>
@@ -105,7 +105,7 @@ export default function Cart() {
             </div>
             <button
               onClick={handleCheckout}
-              className="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700"
+              className="w-full bg-[#FFC93C] text-white px-6 py-3 rounded-lg hover:bg-[#e6b130]"
             >
               Proceed to Checkout
             </button>
