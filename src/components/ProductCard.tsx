@@ -36,13 +36,13 @@ export default function ProductCard({
       
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
-          <span className="text-lg font-bold text-indigo-600">${price.toFixed(2)}</span>
+          <h3 className="text-lg font-semibold text-[#FF4B2B]">{name}</h3>
+          <span className="text-lg font-bold text-[#FFC93C]">${price.toFixed(2)}</span>
         </div>
-        <p className="text-gray-600 text-sm mb-4">{description}</p>
+        <p className="text-[#333333] text-sm mb-4">{description}</p>
         <button
           onClick={onAddToCart}
-          className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-[#FF4B2B] text-white py-2 px-4 rounded-lg hover:bg-[#e0451f] transition-colors"
         >
           <ShoppingCart className="w-4 h-4" />
           Add to Cart

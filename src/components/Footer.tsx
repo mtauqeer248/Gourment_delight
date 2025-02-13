@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-[#1F1F1F] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -30,16 +30,16 @@ export default function Footer() {
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/menu" className="hover:text-indigo-400">Menu</Link>
+                <Link to="/menu" className="hover:text-[#FFC93C]">Menu</Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-indigo-400">About Us</Link>
+                <Link to="/about" className="hover:text-[#FFC93C]">About Us</Link>
               </li>
               <li>
-                <Link to="/reviews" className="hover:text-indigo-400">Reviews</Link>
+                <Link to="/reviews" className="hover:text-[#FFC93C]">Reviews</Link>
               </li>
               <li>
-                <Link to="/faq" className="hover:text-indigo-400">FAQ</Link>
+                <Link to="/faq" className="hover:text-[#FFC93C]">FAQ</Link>
               </li>
             </ul>
           </div>
@@ -58,13 +58,13 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4">Follow Us</h3>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-indigo-400">
+              <a href="#" className="hover:text-[#FFC93C]">
                 <Facebook className="w-6 h-6" />
               </a>
-              <a href="#" className="hover:text-indigo-400">
+              <a href="#" className="hover:text-[#FFC93C]">
                 <Twitter className="w-6 h-6" />
               </a>
-              <a href="#" className="hover:text-indigo-400">
+              <a href="#" className="hover:text-[#FFC93C]">
                 <Instagram className="w-6 h-6" />
               </a>
             </div>

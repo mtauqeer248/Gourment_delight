@@ -47,7 +47,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2">
-              <Utensils className="w-8 h-8 text-indigo-600" />
+              <Utensils className="w-8 h-8 text-[#1F1F1F]" />
               <span className="text-xl font-bold text-gray-900">Gourmet Delights</span>
             </Link>
           </div>
@@ -60,8 +60,8 @@ export default function Navbar() {
                 to={item.path}
                 className={`${
                   location.pathname === item.path
-                    ? 'text-indigo-600'
-                    : 'text-gray-700 hover:text-indigo-600'
+                    ? 'text-[#FF4B2B]'
+                    : 'text-gray-700 hover:text-[#FF4B2B]'
                 } transition-colors duration-200`}
               >
                 {item.name}
@@ -72,12 +72,12 @@ export default function Navbar() {
             {user ? (
               <Link
                 to="/cart"
-                className="relative text-gray-700 hover:text-indigo-600"
+                className="relative text-gray-700 hover:[#FF4B2B] "
               >
                 <ShoppingCart className="w-6 h-6" />
                 {/* Display the cart item count at the top right corner */}
                 {cartItemCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute top-0 right-0 bg-[#FF4B2B] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItemCount}
                   </span>
                 )}
@@ -85,7 +85,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="text-gray-700 hover:text-indigo-600"
+                className="text-gray-700 hover:text-[#FF4B2B]"
               >
                <ShoppingCart className="w-6 h-6" />
               </Link>
@@ -94,14 +94,14 @@ export default function Navbar() {
             {user ? (
               <button
                 onClick={handleSignOut} // Call handleSignOut for sign-out
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                className="bg-[#FF4B2B] text-white px-4 py-2 rounded-lg hover:bg-[#FF4B2B ] transition-colors"
               >
                 Sign Out
               </button>
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-2 text-gray-700 hover:text-indigo-600"
+                className="flex items-center gap-2 text-gray-700 hover:text-[#FF4B2B]"
               >
                 <LogIn className="w-6 h-6" />
                 <span>Sign In</span>
@@ -135,8 +135,8 @@ export default function Navbar() {
                 to={item.path}
                 className={`${
                   location.pathname === item.path
-                    ? 'bg-indigo-50 text-indigo-600'
-                    : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600'
+                    ? 'bg-indigo-50 text-[#FF4B2B ]'
+                    : 'text-gray-700 hover:bg-indigo-50 hover:text-[#FF4B2B ]'
                 } block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200`}
                 onClick={() => setIsOpen(false)}
               >
@@ -148,13 +148,13 @@ export default function Navbar() {
             {user ? (
               <Link
                 to="/cart"
-                className="relative flex items-center gap-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium"
+                className="relative flex items-center gap-2 text-gray-700 hover:bg-indigo-50 hover:text-[#FF4B2B ] px-3 py-2 rounded-md text-base font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 <ShoppingCart className="w-6 h-6" />
                 <span>Cart</span>
                 {cartItemCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute top-0 right-0 bg-[#FF4B2B] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItemCount}
                   </span>
                 )}
@@ -162,7 +162,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="px-3 py-2 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+                className="px-3 py-2 text-base font-medium text-gray-700 hover:bg-[#FF4B2B] hover:text-[#FF4B2B]"
                 onClick={() => setIsOpen(false)}
               >
               <ShoppingCart className="w-6 h-6" />
@@ -175,14 +175,14 @@ export default function Navbar() {
                   handleSignOut(); // Call handleSignOut for sign-out
                   setIsOpen(false);
                 }}
-                className="w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600"
+                className="w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-indigo-50 hover:text-[#FF4B2B]"
               >
                 Sign Out
               </button>
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium"
+                className="flex items-center gap-2 text-gray-700 hover:bg-indigo-50 hover:text-[#FF4B2B] px-3 py-2 rounded-md text-base font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 <LogIn className="w-6 h-6" />

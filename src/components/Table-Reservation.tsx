@@ -137,7 +137,7 @@ const RestaurantSeating: React.FC = () => {
           <div
             key={table.id}
             className={`w-40 h-40 flex items-center justify-center 
-              ${table.isOccupied ? 'bg-red-400 text-white shadow-[0_0_8px_#ff4d4d,0_0_12px_#ff4d4d,0_0_20px_#ff4d4d]' : 'bg-green-400 text-white shadow-[0_0_8px_#66ff66,0_0_12px_#66ff66,0_0_20px_#66ff66]'} 
+              ${table.isOccupied ? 'bg-red-400 text-white shadow-[0_0_8px_#ff4d4d,0_0_12px_#ff4d4d,0_0_20px_#ff4d4d]' : 'bg-[#FFC93C] text-white shadow-[0_0_8px_#66ff66,0_0_12px_#66ff66,0_0_20px_#66ff66]'} 
               rounded-lg cursor-pointer transition-transform transform hover:scale-105 border-2 border-stone-200 shadow-lg`}
             onClick={() => handleTableClick(table)}
           >
@@ -188,7 +188,7 @@ const RestaurantSeating: React.FC = () => {
              <button
   type="submit"
   disabled={loading}
-  className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition-colors"
+  className="w-full bg-[#FFC93C] text-white py-2 rounded-md hover:bg-[#e6b130] transition-colors"
 >
   {loading ? 'Saving Reservation...' : 'Confirm Reservation'}
 </button>
@@ -198,7 +198,7 @@ const RestaurantSeating: React.FC = () => {
                   setShowForm(false);
                   setSelectedTable(null);
                 }}
-                className="w-full mt-2 bg-stone-200 text-stone-700 py-2 rounded-md hover:bg-stone-300 transition-colors"
+                className="w-full mt-2 bg-[#FF4B2B] text-white py-2 rounded-md hover:bg-[#e0451f] transition-colors"
               >
                 Cancel
               </button>

@@ -267,7 +267,7 @@ export default function Menu() {
     onClick={() => handleCategoryClick(category.id)}
     className={`px-4 py-2 rounded-full ${
       selectedCategory === category.id
-        ? 'bg-indigo-600 text-white'
+        ? 'bg-[#FF4B2B] text-white'
         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
     }`}
   >

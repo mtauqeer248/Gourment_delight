@@ -51,7 +51,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-4">
   <button
     onClick={handleViewMenuClick}
-    className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors w-full md:w-auto"
+    className="flex items-center justify-center gap-2 bg-[#FF4B2B] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#e0451f] transition-colors w-full md:w-auto"
   >
     {user ? (
       <>View Menu <ArrowRight className="w-5 h-5" /></>
@@ -62,7 +62,7 @@ export default function Home() {
 
   <button
     onClick={handleBookReservationClick}
-    className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition-colors w-full md:w-auto"
+    className="flex items-center justify-center gap-2 bg-[#FFC93C] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#e6b130] transition-colors w-full md:w-auto"
   >
     {user ? (
       <>Book Reservation <ArrowRight className="w-5 h-5" /></>
@@ -89,14 +89,14 @@ export default function Home() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
-                  <p className="text-gray-600 mb-4">{item.description}</p>
+                  <h3 className="text-xl font-semibold mb-2 text-[#1F1F1F]">{item.name}</h3>
+                  <p className="text-[#333333] mb-4">{item.description}</p>
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold text-indigo-600">
+                    <span className="text-lg font-bold text-[#FF4B2B]">
                       ${item.price.toFixed(2)}
                     </span>
                     {user ? (
-                      <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                      <button className="bg-[#FFC93C] text-white px-4 py-2 rounded-lg hover:bg-[#e6b130] transition-colors">
                         <Link to={'menu'}>
                           view Menu
                         </Link>
@@ -104,7 +104,7 @@ export default function Home() {
                     ) : (
                       <button
                         onClick={handleViewMenuClick}
-                        className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                        className="bg-[#FFC93C] text-white px-4 py-2 rounded-lg hover:bg-[#e6b130] transition-colors"
                       >
                         View Menu
                       </button>

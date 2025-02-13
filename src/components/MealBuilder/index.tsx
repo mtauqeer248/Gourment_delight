@@ -555,7 +555,7 @@ function MealDisplayPage() {
               key={type}
               onClick={() => setSelectedMealType(type)}
               className={`px-4 py-2 rounded-lg ${selectedMealType === type
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#FF4B2B] text-white'
                   : 'bg-white text-gray-700 hover:bg-gray-100'
                 }`}
             >
@@ -594,10 +594,10 @@ function MealDisplayPage() {
             >
               <Trash2 size={16} /> Remove Meal
             </button>
-            <button onClick={handleAddToCart} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+            <button onClick={handleAddToCart} className="bg-[#FFC93C] text-white px-4 py-2 rounded-lg hover:bg-[#e6b130] transition-colors">
               Add to Cart
             </button>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+            <button className="bg-[#FF4B2B] text-white px-4 py-2 rounded-lg hover:bg-[#e0451f] transition-colors">
               <Link to={'/menu'}>
 
                 Back to main Menu
